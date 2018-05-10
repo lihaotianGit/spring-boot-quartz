@@ -8,13 +8,21 @@ import org.springframework.util.ClassUtils;
 import scheduler.enums.JobType;
 import scheduler.utils.MapHelper;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 public class JobVo {
 
+    @NotNull
     private String name;
+
+    @NotNull
     private String group;
+
+    @NotNull
     private String description;
+
+    @NotNull
     private Map<String, Object> extraInfo;
 
     private final static String JOB_TYPE = "jobType";
@@ -23,6 +31,9 @@ public class JobVo {
     }
 
     public JobDetail buildJobDetail() {
+        if (MapHelper.isBlank(extraInfo) || !extraInfo.containsKey(JOB_TYPE)) {
+            throw new IllegalArgumentException("Job extraInfo is empty, or extraInfo do not contains key 'jobType'.");
+        }
         return JobBuilder.newJob()
                 .ofType(getClassType())
                 .withIdentity(this.getName(), this.getGroup())
@@ -32,9 +43,6 @@ public class JobVo {
     }
 
     private JobDataMap getJobDataMap() {
-        if (MapHelper.isBlank(extraInfo) || !extraInfo.containsKey(JOB_TYPE)) {
-            throw new IllegalArgumentException("Job extraInfo is empty, or extraInfo do not contains key 'jobType'.");
-        }
         JobDataMap jobDataMap = new JobDataMap();
         extraInfo.forEach(jobDataMap::put);
         return jobDataMap;
