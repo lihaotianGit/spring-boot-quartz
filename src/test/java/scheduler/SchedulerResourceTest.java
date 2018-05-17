@@ -40,8 +40,6 @@ public class SchedulerResourceTest {
     @LocalServerPort
     private int port;
 
-    private String host;
-
     private String url;
 
     @Before
@@ -64,7 +62,8 @@ public class SchedulerResourceTest {
         session.getConnection().prepareStatement(sql).execute();
         session.commit();
         session.close();
-        host = "http://127.0.0.1:" + port;
+
+        String host = "http://127.0.0.1:" + port;
         url = host + "/jobs";
     }
 
