@@ -6,30 +6,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import scheduler.domain.JobVo;
-import scheduler.service.SchedulerService;
+import scheduler.service.JobService;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("/schedulers")
-public class SchedulersResource {
+@RequestMapping("/jobs")
+public class JobResource {
 
-    private final static Logger logger = Logger.getLogger(SchedulersResource.class);
+    private final static Logger logger = Logger.getLogger(JobResource.class);
 
     @Resource
-    private SchedulerService schedulerService;
+    private JobService jobService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody JobVo jobVo) throws SchedulerException {
-        schedulerService.save(jobVo);
+        jobService.save(jobVo);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<JobVo> findAll() throws SchedulerException {
-        return schedulerService.findAll();
+        return jobService.findAll();
     }
 
 }

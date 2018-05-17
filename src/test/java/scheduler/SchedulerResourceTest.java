@@ -2,6 +2,7 @@ package scheduler;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
-import scheduler.domain.JobVo;
 import scheduler.domain.JobDetailVo;
+import scheduler.domain.JobVo;
 import scheduler.domain.TriggerVo;
 
 import javax.annotation.Resource;
@@ -28,6 +29,8 @@ import static scheduler.utils.JsonHelper.toJson;
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SchedulerResourceTest {
 
+    private final static Logger logger = Logger.getLogger(SchedulerResourceTest.class);
+
     @Resource
     private RestTemplate restTemplate;
 
@@ -37,11 +40,14 @@ public class SchedulerResourceTest {
     @LocalServerPort
     private int port;
 
-    private String host = "http://127.0.0.1:";
+    private String host;
+
+    private String url;
 
     @Before
     public void before() throws SQLException {
-        String sql = "SET FOREIGN_KEY_CHECKS = 0;" +
+        String sql =
+                "SET FOREIGN_KEY_CHECKS = 0;" +
                 "TRUNCATE TABLE QRTZ_BLOB_TRIGGERS;" +
                 "TRUNCATE TABLE QRTZ_CALENDARS;" +
                 "TRUNCATE TABLE QRTZ_CRON_TRIGGERS;" +
@@ -58,6 +64,8 @@ public class SchedulerResourceTest {
         session.getConnection().prepareStatement(sql).execute();
         session.commit();
         session.close();
+        host = "http://127.0.0.1:" + port;
+        url = host + "/jobs";
     }
 
     @Test
@@ -88,14 +96,14 @@ public class SchedulerResourceTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(postJson, headers);
-        restTemplate.postForEntity(host + port + "/schedulers", entity, String.class);
+        restTemplate.postForEntity(url, entity, String.class);
     }
 
     @Test
     public void should_find_all_schedulers() {
         should_create_scheduler();
-        ResponseEntity<String> result = restTemplate.getForEntity(host + port + "/schedulers", String.class);
-        System.out.println();
+        ResponseEntity<String> result = restTemplate.getForEntity(url, String.class);
+        logger.info("HttpResponse Body: " + result.getBody());
     }
 }
 

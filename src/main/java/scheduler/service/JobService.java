@@ -17,9 +17,9 @@ import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 
 @Service
-public class SchedulerService {
+public class JobService {
 
-    private final static Logger logger = Logger.getLogger(SchedulerService.class);
+    private final static Logger logger = Logger.getLogger(JobService.class);
 
     @Resource
     private Scheduler scheduler;
