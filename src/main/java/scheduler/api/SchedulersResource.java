@@ -9,8 +9,7 @@ import scheduler.domain.JobDetailVo;
 import scheduler.service.SchedulerService;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/schedulers")
@@ -29,11 +28,8 @@ public class SchedulersResource {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Map getTest() {
-        Map map = new HashMap();
-        map.put("key", "value");
-        int i = 1 / 0;
-        return map;
+    public List<JobDetailVo> findAll() throws SchedulerException {
+        return schedulerService.findAll();
     }
 
 }

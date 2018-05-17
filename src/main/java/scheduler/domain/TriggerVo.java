@@ -15,6 +15,13 @@ public class TriggerVo {
     public TriggerVo() {
     }
 
+    private TriggerVo(Builder builder) {
+        setName(builder.name);
+        setGroup(builder.group);
+        setDescription(builder.description);
+        setExpression(builder.expression);
+    }
+
     public CronTrigger buildCronTrigger(JobDetail jobDetail) {
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail)
@@ -33,6 +40,20 @@ public class TriggerVo {
         } catch (ParseException e) {
             throw new IllegalArgumentException("String expression can not parse to cron expression: " + this.getExpression());
         }
+    }
+
+    public static TriggerVo trigger2TriggerVo(Trigger trigger) {
+        TriggerKey triggerKey = trigger.getKey();
+        String expression = null;
+        if (trigger instanceof CronTrigger) {
+            expression = ((CronTrigger) trigger).getCronExpression();
+        }
+        return new Builder()
+                .name(triggerKey.getName())
+                .group(triggerKey.getGroup())
+                .description(trigger.getDescription())
+                .expression(expression)
+                .build();
     }
 
     public String getName() {
@@ -65,5 +86,39 @@ public class TriggerVo {
 
     public void setExpression(String expression) {
         this.expression = expression;
+    }
+
+    public static final class Builder {
+        private String name;
+        private String group;
+        private String description;
+        private String expression;
+
+        public Builder() {
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder group(String val) {
+            group = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder expression(String val) {
+            expression = val;
+            return this;
+        }
+
+        public TriggerVo build() {
+            return new TriggerVo(this);
+        }
     }
 }

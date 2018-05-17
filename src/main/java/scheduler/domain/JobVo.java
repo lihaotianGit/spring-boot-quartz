@@ -1,9 +1,6 @@
 package scheduler.domain;
 
-import org.quartz.Job;
-import org.quartz.JobBuilder;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
+import org.quartz.*;
 import org.springframework.util.ClassUtils;
 import scheduler.enums.JobType;
 import scheduler.utils.MapHelper;
@@ -30,6 +27,13 @@ public class JobVo {
     public JobVo() {
     }
 
+    private JobVo(Builder builder) {
+        setName(builder.name);
+        setGroup(builder.group);
+        setDescription(builder.description);
+        setExtraInfo(builder.extraInfo);
+    }
+
     public JobDetail buildJobDetail() {
         if (MapHelper.isBlank(extraInfo) || !extraInfo.containsKey(JOB_TYPE)) {
             throw new IllegalArgumentException("Job extraInfo is empty, or extraInfo do not contains key 'jobType'.");
@@ -50,6 +54,16 @@ public class JobVo {
 
     private Class<Job> getClassType() {
         return (Class<Job>) ClassUtils.resolveClassName(JobType.map.get(extraInfo.get(JOB_TYPE)).getClassPath(), this.getClass().getClassLoader());
+    }
+
+    public static JobVo JobDetail2JobVo(JobDetail jobDetail) {
+        JobKey jobKey = jobDetail.getKey();
+        return new Builder()
+                .name(jobKey.getName())
+                .group(jobKey.getGroup())
+                .description(jobDetail.getDescription())
+                .extraInfo(jobDetail.getJobDataMap())
+                .build();
     }
 
     public String getName() {
@@ -82,5 +96,39 @@ public class JobVo {
 
     public void setExtraInfo(Map<String, Object> extraInfo) {
         this.extraInfo = extraInfo;
+    }
+
+    public static final class Builder {
+        private String name;
+        private String group;
+        private String description;
+        private Map<String, Object> extraInfo;
+
+        public Builder() {
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder group(String val) {
+            group = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder extraInfo(Map<String, Object> val) {
+            extraInfo = val;
+            return this;
+        }
+
+        public JobVo build() {
+            return new JobVo(this);
+        }
     }
 }

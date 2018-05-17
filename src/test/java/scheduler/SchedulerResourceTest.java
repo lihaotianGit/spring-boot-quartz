@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import scheduler.domain.JobDetailVo;
@@ -90,7 +91,12 @@ public class SchedulerResourceTest {
         restTemplate.postForEntity(host + port + "/schedulers", entity, String.class);
     }
 
-
+    @Test
+    public void should_find_all_schedulers() {
+        should_create_scheduler();
+        ResponseEntity<String> result = restTemplate.getForEntity(host + port + "/schedulers", String.class);
+        System.out.println();
+    }
 }
 
 
