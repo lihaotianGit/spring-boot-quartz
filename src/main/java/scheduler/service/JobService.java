@@ -5,8 +5,8 @@ import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import scheduler.domain.JobVo;
 import scheduler.domain.JobDetailVo;
+import scheduler.domain.JobVo;
 import scheduler.domain.TriggerVo;
 
 import javax.annotation.Resource;
@@ -38,13 +38,18 @@ public class JobService {
         Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.anyJobGroup());
         List<JobVo> jobVos = new ArrayList<>();
         for (JobKey jobKey: jobKeys) {
-            JobDetailVo jobDetailVo = JobDetailVo.JobDetail2JobDetailVo(scheduler.getJobDetail(jobKey));
-            Set<TriggerVo> triggerVos = ((List<Trigger>) scheduler.getTriggersOfJob(jobKey))
-                    .stream()
-                    .map(TriggerVo::trigger2TriggerVo)
-                    .collect(toSet());
-            jobVos.add(new JobVo.Builder().jobVo(jobDetailVo).triggerVos(triggerVos).build());
+            jobVos.add(findJob(jobKey));
         }
         return jobVos;
+    }
+
+    @Transactional(readOnly = true)
+    public JobVo findJob(JobKey jobKey) throws SchedulerException {
+        JobDetailVo jobDetailVo = JobDetailVo.JobDetail2JobDetailVo(scheduler.getJobDetail(jobKey));
+        Set<TriggerVo> triggerVos = ((List<Trigger>) scheduler.getTriggersOfJob(jobKey))
+                .stream()
+                .map(TriggerVo::trigger2TriggerVo)
+                .collect(toSet());
+        return new JobVo.Builder().jobVo(jobDetailVo).triggerVos(triggerVos).build();
     }
 }

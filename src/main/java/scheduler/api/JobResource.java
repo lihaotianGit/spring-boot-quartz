@@ -1,9 +1,10 @@
 package scheduler.api;
 
 import org.apache.log4j.Logger;
+import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import scheduler.domain.JobVo;
 import scheduler.service.JobService;
@@ -20,16 +21,21 @@ public class JobResource {
     @Resource
     private JobService jobService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody JobVo jobVo) throws SchedulerException {
+    @PostMapping
+    public ResponseEntity create(@RequestBody JobVo jobVo) throws SchedulerException {
         jobService.save(jobVo);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<JobVo> findAll() throws SchedulerException {
-        return jobService.findAll();
+    @GetMapping
+    public ResponseEntity<List<JobVo>> findAll() throws SchedulerException {
+        return ResponseEntity.ok().body(jobService.findAll());
+    }
+
+    @GetMapping("/{group}/{name}")
+    public ResponseEntity<JobVo> findJob(@PathVariable String name,
+                                         @PathVariable String group) throws SchedulerException {
+        return ResponseEntity.ok().body(jobService.findJob(new JobKey(name, group)));
     }
 
 }

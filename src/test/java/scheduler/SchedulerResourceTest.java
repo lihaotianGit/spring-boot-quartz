@@ -21,8 +21,8 @@ import scheduler.domain.TriggerVo;
 import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
 
+import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
 import static scheduler.utils.JsonHelper.toJson;
 
 @RunWith(SpringRunner.class)
@@ -70,27 +70,7 @@ public class SchedulerResourceTest {
 
     @Test
     public void should_create_scheduler() {
-        JobDetailVo jobDetailVo = new JobDetailVo();
-        jobDetailVo.setName("myJob");
-        jobDetailVo.setGroup("myJobGroup");
-        jobDetailVo.setDescription("myDescription");
-        jobDetailVo.setExtraInfo(new HashMap<String, Object>() {{
-            put("jobType", "HTTP_JOB");
-        }});
-
-        TriggerVo triggerVo = new TriggerVo();
-        triggerVo.setName("myTrigger");
-        triggerVo.setGroup("myTriggerGroup");
-        triggerVo.setDescription("myTriggerDescription");
-        triggerVo.setExpression("0/10 * * * * ?");
-
-        JobVo jobVo = new JobVo();
-        jobVo.setJobDetailVo(jobDetailVo);
-        jobVo.setTriggerVos(new HashSet<TriggerVo>() {{
-            add(triggerVo);
-        }});
-
-        String postJson = toJson(jobVo);
+        String postJson = toJson(buildJobVo());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -99,9 +79,40 @@ public class SchedulerResourceTest {
         restTemplate.postForEntity(url, entity, String.class);
     }
 
+    private JobVo buildJobVo() {
+        JobDetailVo jobDetailVo = new JobDetailVo.Builder()
+                .name("myJob")
+                .group("myJobGroup")
+                .description("myDescription")
+                .extraInfo(new HashMap<String, Object>() {{
+                    put("jobType", "HTTP_JOB");
+                }})
+                .build();
+
+        TriggerVo triggerVo = new TriggerVo.Builder()
+                .name("myTrigger")
+                .group("myTriggerGroup")
+                .description("myTriggerDescription")
+                .expression("0/10 * * * * ?")
+                .build();
+
+        return new JobVo.Builder()
+                .jobVo(jobDetailVo)
+                .triggerVos(asSet(triggerVo))
+                .build();
+    }
+
     @Test
     public void should_find_all_schedulers() {
         should_create_scheduler();
+        ResponseEntity<String> result = restTemplate.getForEntity(url, String.class);
+        logger.info("HttpResponse Body: " + result.getBody());
+    }
+
+    @Test
+    public void should_find_job() {
+        JobVo jobVo = buildJobVo();
+        String url = this.url + "/" + jobVo.getJobDetailVo().getGroup() + "/" + jobVo.getJobDetailVo().getName();
         ResponseEntity<String> result = restTemplate.getForEntity(url, String.class);
         logger.info("HttpResponse Body: " + result.getBody());
     }
