@@ -13,8 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
-import scheduler.domain.JobDetailVo;
 import scheduler.domain.JobVo;
+import scheduler.domain.JobDetailVo;
 import scheduler.domain.TriggerVo;
 
 import javax.annotation.Resource;
@@ -62,11 +62,11 @@ public class SchedulerResourceTest {
 
     @Test
     public void should_create_scheduler() {
-        JobVo jobVo = new JobVo();
-        jobVo.setName("myJob");
-        jobVo.setGroup("myJobGroup");
-        jobVo.setDescription("myDescription");
-        jobVo.setExtraInfo(new HashMap<String, Object>() {{
+        JobDetailVo jobDetailVo = new JobDetailVo();
+        jobDetailVo.setName("myJob");
+        jobDetailVo.setGroup("myJobGroup");
+        jobDetailVo.setDescription("myDescription");
+        jobDetailVo.setExtraInfo(new HashMap<String, Object>() {{
             put("jobType", "HTTP_JOB");
         }});
 
@@ -76,13 +76,13 @@ public class SchedulerResourceTest {
         triggerVo.setDescription("myTriggerDescription");
         triggerVo.setExpression("0/10 * * * * ?");
 
-        JobDetailVo jobDetailVo = new JobDetailVo();
-        jobDetailVo.setJobVo(jobVo);
-        jobDetailVo.setTriggerVos(new HashSet<TriggerVo>() {{
+        JobVo jobVo = new JobVo();
+        jobVo.setJobDetailVo(jobDetailVo);
+        jobVo.setTriggerVos(new HashSet<TriggerVo>() {{
             add(triggerVo);
         }});
 
-        String postJson = toJson(jobDetailVo);
+        String postJson = toJson(jobVo);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

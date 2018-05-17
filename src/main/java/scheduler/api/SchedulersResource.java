@@ -5,7 +5,7 @@ import org.quartz.SchedulerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import scheduler.domain.JobDetailVo;
+import scheduler.domain.JobVo;
 import scheduler.service.SchedulerService;
 
 import javax.annotation.Resource;
@@ -22,13 +22,13 @@ public class SchedulersResource {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody JobDetailVo jobDetailVo) throws SchedulerException {
-        schedulerService.save(jobDetailVo);
+    public void create(@RequestBody JobVo jobVo) throws SchedulerException {
+        schedulerService.save(jobVo);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<JobDetailVo> findAll() throws SchedulerException {
+    public List<JobVo> findAll() throws SchedulerException {
         return schedulerService.findAll();
     }
 

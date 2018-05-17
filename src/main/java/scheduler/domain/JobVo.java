@@ -1,129 +1,50 @@
 package scheduler.domain;
 
-import org.quartz.*;
-import org.springframework.util.ClassUtils;
-import scheduler.enums.JobType;
-import scheduler.utils.MapHelper;
-
-import javax.validation.constraints.NotNull;
-import java.util.Map;
+import java.util.Set;
 
 public class JobVo {
 
-    @NotNull
-    private String name;
-
-    @NotNull
-    private String group;
-
-    @NotNull
-    private String description;
-
-    @NotNull
-    private Map<String, Object> extraInfo;
-
-    private final static String JOB_TYPE = "jobType";
+    private JobDetailVo jobDetailVo;
+    private Set<TriggerVo> triggerVos;
 
     public JobVo() {
     }
 
     private JobVo(Builder builder) {
-        setName(builder.name);
-        setGroup(builder.group);
-        setDescription(builder.description);
-        setExtraInfo(builder.extraInfo);
+        setJobDetailVo(builder.jobDetailVo);
+        setTriggerVos(builder.triggerVos);
     }
 
-    public JobDetail buildJobDetail() {
-        if (MapHelper.isBlank(extraInfo) || !extraInfo.containsKey(JOB_TYPE)) {
-            throw new IllegalArgumentException("Job extraInfo is empty, or extraInfo do not contains key 'jobType'.");
-        }
-        return JobBuilder.newJob()
-                .ofType(getClassType())
-                .withIdentity(this.getName(), this.getGroup())
-                .withDescription(this.getDescription())
-                .setJobData(getJobDataMap())
-                .build();
+    public JobDetailVo getJobDetailVo() {
+        return jobDetailVo;
     }
 
-    private JobDataMap getJobDataMap() {
-        JobDataMap jobDataMap = new JobDataMap();
-        extraInfo.forEach(jobDataMap::put);
-        return jobDataMap;
+    public void setJobDetailVo(JobDetailVo jobDetailVo) {
+        this.jobDetailVo = jobDetailVo;
     }
 
-    private Class<Job> getClassType() {
-        return (Class<Job>) ClassUtils.resolveClassName(JobType.map.get(extraInfo.get(JOB_TYPE)).getClassPath(), this.getClass().getClassLoader());
+    public Set<TriggerVo> getTriggerVos() {
+        return triggerVos;
     }
 
-    public static JobVo JobDetail2JobVo(JobDetail jobDetail) {
-        JobKey jobKey = jobDetail.getKey();
-        return new Builder()
-                .name(jobKey.getName())
-                .group(jobKey.getGroup())
-                .description(jobDetail.getDescription())
-                .extraInfo(jobDetail.getJobDataMap())
-                .build();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Map<String, Object> getExtraInfo() {
-        return extraInfo;
-    }
-
-    public void setExtraInfo(Map<String, Object> extraInfo) {
-        this.extraInfo = extraInfo;
+    public void setTriggerVos(Set<TriggerVo> triggerVos) {
+        this.triggerVos = triggerVos;
     }
 
     public static final class Builder {
-        private String name;
-        private String group;
-        private String description;
-        private Map<String, Object> extraInfo;
+        private JobDetailVo jobDetailVo;
+        private Set<TriggerVo> triggerVos;
 
         public Builder() {
         }
 
-        public Builder name(String val) {
-            name = val;
+        public Builder jobVo(JobDetailVo val) {
+            jobDetailVo = val;
             return this;
         }
 
-        public Builder group(String val) {
-            group = val;
-            return this;
-        }
-
-        public Builder description(String val) {
-            description = val;
-            return this;
-        }
-
-        public Builder extraInfo(Map<String, Object> val) {
-            extraInfo = val;
+        public Builder triggerVos(Set<TriggerVo> val) {
+            triggerVos = val;
             return this;
         }
 
