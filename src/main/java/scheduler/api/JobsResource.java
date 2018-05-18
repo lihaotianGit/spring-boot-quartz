@@ -14,9 +14,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/jobs")
-public class JobResource {
+public class JobsResource {
 
-    private final static Logger logger = Logger.getLogger(JobResource.class);
+    private final static Logger logger = Logger.getLogger(JobsResource.class);
 
     @Resource
     private JobService jobService;
