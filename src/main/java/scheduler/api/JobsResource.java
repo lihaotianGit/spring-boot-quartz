@@ -3,7 +3,6 @@ package scheduler.api;
 import org.apache.log4j.Logger;
 import org.quartz.JobKey;
 import org.quartz.SchedulerException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import scheduler.domain.JobVo;
@@ -11,6 +10,8 @@ import scheduler.service.JobService;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static scheduler.utils.URIHelper.jobUri;
 
 @RestController
 @RequestMapping("/jobs")
@@ -24,7 +25,7 @@ public class JobsResource {
     @PostMapping
     public ResponseEntity create(@RequestBody JobVo jobVo) throws SchedulerException {
         jobService.save(jobVo);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.created(jobUri(jobVo.getJobDetailVo())).build();
     }
 
     @GetMapping
