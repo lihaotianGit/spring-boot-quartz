@@ -15,9 +15,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static scheduler.utils.JsonHelper.toJson;
 
-public class SchedulerResourceTest extends BaseResourceTest {
+public class JobsResourceTest extends BaseResourceTest {
 
-    private final static Logger logger = Logger.getLogger(SchedulerResourceTest.class);
+    private final static Logger logger = Logger.getLogger(JobsResourceTest.class);
 
     @Test
     public void should_create_scheduler() throws Exception {

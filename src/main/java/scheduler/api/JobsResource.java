@@ -11,7 +11,7 @@ import scheduler.service.JobService;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static scheduler.utils.URIHelper.jobUri;
+import static scheduler.utils.URIHelper.createUri;
 
 @RestController
 @RequestMapping("/jobs")
@@ -25,7 +25,8 @@ public class JobsResource {
     @PostMapping
     public ResponseEntity create(@RequestBody JobVo jobVo) throws SchedulerException {
         jobService.save(jobVo);
-        return ResponseEntity.created(jobUri(jobVo.getJobDetailVo())).build();
+        return ResponseEntity.created(createUri("/{group}/{name}", jobVo.getJobDetailVo().getGroup(), jobVo.getJobDetailVo().getName()))
+                .build();
     }
 
     @GetMapping
