@@ -6,9 +6,8 @@ import java.net.URI;
 
 public class URIHelper {
 
-    private static ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
-
     public static URI createUri(String path, Object... value) {
+        ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
         return builder.path(path)
                 .buildAndExpand(value)
                 .toUri();
