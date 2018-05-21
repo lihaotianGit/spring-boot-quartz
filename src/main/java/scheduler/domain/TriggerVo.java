@@ -1,5 +1,6 @@
 package scheduler.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.quartz.*;
 import org.springframework.util.StringUtils;
 
@@ -7,7 +8,9 @@ import java.text.ParseException;
 
 public class TriggerVo {
 
+    @NotEmpty(message = "The triggerVo.name cannot be empty.")
     private String name;
+    @NotEmpty
     private String group;
     private String description;
     private String expression;

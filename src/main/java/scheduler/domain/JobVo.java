@@ -1,10 +1,17 @@
 package scheduler.domain;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 public class JobVo {
 
+    @NotNull
+    @Valid
     private JobDetailVo jobDetailVo;
+
+    @NotNull
+    @Valid
     private Set<TriggerVo> triggerVos;
 
     public JobVo() {

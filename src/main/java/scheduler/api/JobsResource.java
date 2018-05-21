@@ -9,6 +9,7 @@ import scheduler.domain.JobVo;
 import scheduler.service.JobService;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 import static scheduler.utils.URIHelper.createUri;
@@ -23,7 +24,7 @@ public class JobsResource {
     private JobService jobService;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody JobVo jobVo) throws SchedulerException {
+    public ResponseEntity create(@Valid @RequestBody JobVo jobVo) throws SchedulerException {
         jobService.save(jobVo);
         return ResponseEntity.created(createUri("/{group}/{name}", jobVo.getJobDetailVo().getGroup(), jobVo.getJobDetailVo().getName()))
                 .build();
