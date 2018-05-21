@@ -41,4 +41,60 @@ public class JobsResource {
         return ResponseEntity.ok().body(jobService.findJob(new JobKey(name, group)));
     }
 
+    /**
+     * 立即触发一次任务
+     * @param name
+     * @param group
+     * @return
+     * @throws SchedulerException
+     */
+    @PutMapping("/trigger/{group}/{name}")
+    public ResponseEntity triggerJob(@PathVariable String name,
+                                     @PathVariable String group) throws SchedulerException {
+        jobService.triggerJob(new JobKey(name, group));
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 暂停任务
+     * @param name
+     * @param group
+     * @return
+     * @throws SchedulerException
+     */
+    @PutMapping("/pause/{group}/{name}")
+    public ResponseEntity pauseJob(@PathVariable String name,
+                                   @PathVariable String group) throws SchedulerException {
+        jobService.pauseJob(new JobKey(name, group));
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 恢复（已暂停）任务
+     * @param name
+     * @param group
+     * @return
+     * @throws SchedulerException
+     */
+    @PutMapping("/resume/{group}/{name}")
+    public ResponseEntity resumeJob(@PathVariable String name,
+                                    @PathVariable String group) throws SchedulerException {
+        jobService.resumeJob(new JobKey(name, group));
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 删除任务
+     * @param name
+     * @param group
+     * @return
+     * @throws SchedulerException
+     */
+    @DeleteMapping("/delete/{group}/{name}")
+    public ResponseEntity deleteJob(@PathVariable String name,
+                                    @PathVariable String group) throws SchedulerException {
+        jobService.deleteJob(new JobKey(name, group));
+        return ResponseEntity.noContent().build();
+    }
+
 }

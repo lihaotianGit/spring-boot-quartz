@@ -52,4 +52,25 @@ public class JobService {
                 .collect(toSet());
         return new JobVo.Builder().jobVo(jobDetailVo).triggerVos(triggerVos).build();
     }
+
+    @Transactional
+    public void triggerJob(JobKey jobKey) throws SchedulerException {
+        scheduler.triggerJob(jobKey);
+    }
+
+    @Transactional
+    public void pauseJob(JobKey jobKey) throws SchedulerException {
+        scheduler.pauseJob(jobKey);
+    }
+
+    @Transactional
+    public void resumeJob(JobKey jobKey) throws SchedulerException {
+        scheduler.resumeJob(jobKey);
+    }
+
+    @Transactional
+    public void deleteJob(JobKey jobKey) throws SchedulerException {
+        scheduler.deleteJob(jobKey);
+    }
+
 }

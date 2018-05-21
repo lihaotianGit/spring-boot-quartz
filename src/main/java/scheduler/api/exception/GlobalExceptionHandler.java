@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
         logger.error("", e);
 
         String msg = e.getMessage() == null ? "UnknownException" : e.getMessage();
-        // TODO: 可能有多个FieldError，该类需要重构，这个判断在这个方法里面不合适
+        // TODO: 可能有多个FieldError，该类需要重构，这个判断在这个方法里面不合适，另外需要找时间完善HibernateValidator的例子
         if (e instanceof MethodArgumentNotValidException) {
             msg = ((MethodArgumentNotValidException) e).getBindingResult().getFieldError().getDefaultMessage();
         }
