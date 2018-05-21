@@ -90,7 +90,7 @@ public class JobsResource {
      * @return
      * @throws SchedulerException
      */
-    @DeleteMapping("/delete/{group}/{name}")
+    @DeleteMapping("/{group}/{name}")
     public ResponseEntity deleteJob(@PathVariable String name,
                                     @PathVariable String group) throws SchedulerException {
         jobService.deleteJob(new JobKey(name, group));
