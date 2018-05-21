@@ -2,6 +2,7 @@ package scheduler.job;
 
 import org.apache.log4j.Logger;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -12,6 +13,8 @@ public class HttpJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("Execute http job.");
+        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+        logger.info("Requesting to " + jobDataMap.get("url"));
     }
 
 }
