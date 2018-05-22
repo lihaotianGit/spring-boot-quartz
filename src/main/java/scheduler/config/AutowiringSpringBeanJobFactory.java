@@ -18,6 +18,12 @@ public final class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory i
         autowireCapableBeanFactory = applicationContext.getAutowireCapableBeanFactory();
     }
 
+    /**
+     * 每次Job执行之前会调用该方法
+     * @param bundle Quartz会从数据库中查询出该对象
+     * @return
+     * @throws Exception
+     */
     @Override
     protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
         final Object job = super.createJobInstance(bundle);
