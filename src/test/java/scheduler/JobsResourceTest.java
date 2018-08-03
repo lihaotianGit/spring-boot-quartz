@@ -34,6 +34,7 @@ public class JobsResourceTest extends BaseResourceTest {
                 .description("myDescription")
                 .extraInfo(new HashMap<String, Object>() {{
                     put("jobType", "HTTP_JOB");
+                    put("url", "https://www.baidu.com");
                 }})
                 .build();
 
@@ -64,6 +65,7 @@ public class JobsResourceTest extends BaseResourceTest {
         String url = "/jobs/" + jobVo.getJobDetailVo().getGroup() + "/" + jobVo.getJobDetailVo().getName();
         mvc.perform(get(url).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+        System.out.println();
     }
 }
 

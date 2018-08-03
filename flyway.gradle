@@ -1,10 +1,10 @@
 flyway {
     driver = 'com.mysql.jdbc.Driver'
-    url = "jdbc:mysql://127.0.0.1:3307/scheduler?zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&characterEncoding=UTF-8"
+    url = "jdbc:mysql://127.0.0.1:3307/spring-boot-quartz?zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&characterEncoding=UTF-8"
     user = 'mysql'
     password = 'mysql'
-    schemas = ['scheduler']
-    table = 'scheduler_version'
+    schemas = ['spring-boot-quartz']
+    table = 'spring_boot_quartz_schema_version'
     locations = ["filesystem:${projectDir}/src/main/resources/migration"]
     sqlMigrationPrefix = 'MySQL-'
     baselineOnMigrate = true
