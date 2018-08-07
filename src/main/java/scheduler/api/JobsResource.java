@@ -32,6 +32,7 @@ public class JobsResource {
 
     @GetMapping
     public ResponseEntity<List<JobVo>> findAll() throws SchedulerException {
+        logger.info("Enter this.");
         return ResponseEntity.ok().body(jobService.findAll());
     }
 

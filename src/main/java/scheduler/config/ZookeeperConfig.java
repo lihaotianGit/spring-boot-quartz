@@ -1,6 +1,5 @@
 package scheduler.config;
 
-import org.I0Itec.zkclient.ZkClient;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -23,11 +22,6 @@ public class ZookeeperConfig {
                 .sessionTimeoutMs(zooKeeperVal.getSessionTimeout())
                 .retryPolicy(new ExponentialBackoffRetry(1000, 3))
                 .build();
-    }
-
-    @Bean
-    public ZkClient zkClient() {
-        return new ZkClient(zooKeeperVal.getUrl(), zooKeeperVal.getSessionTimeout());
     }
 
 }

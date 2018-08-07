@@ -9,7 +9,7 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
+public final class InitializeSpringBeanJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
 
     private transient AutowireCapableBeanFactory autowireCapableBeanFactory;
 
@@ -27,6 +27,7 @@ public final class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory i
     @Override
     protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
         final Object job = super.createJobInstance(bundle);
+        // TODO: 学习
         return autowireCapableBeanFactory.initializeBean(job, job.getClass().getName());
     }
 }

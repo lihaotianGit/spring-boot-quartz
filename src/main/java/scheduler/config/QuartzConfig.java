@@ -22,7 +22,7 @@ public class QuartzConfig {
     private DataSource dataSource;
 
     @Resource
-    private AutowiringSpringBeanJobFactory autowiringSpringBeanJobFactory;
+    private InitializeSpringBeanJobFactory initializeSpringBeanJobFactory;
 
     @PostConstruct
     public void initDone() {
@@ -42,12 +42,13 @@ public class QuartzConfig {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         schedulerFactoryBean.setDataSource(dataSource);
         schedulerFactoryBean.setQuartzProperties(quartzProperties());
+        schedulerFactoryBean.setJobFactory(initializeSpringBeanJobFactory);
 
+        schedulerFactoryBean.setStartupDelay(10);
         schedulerFactoryBean.setAutoStartup(true);
         schedulerFactoryBean.setOverwriteExistingJobs(true);
         schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(false);
 
-        schedulerFactoryBean.setJobFactory(autowiringSpringBeanJobFactory);
         return schedulerFactoryBean;
     }
 }
