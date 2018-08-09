@@ -5,7 +5,7 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import scheduler.application.val.ZooKeeperVal;
+import scheduler.val.ZooKeeperVal;
 
 import javax.annotation.Resource;
 

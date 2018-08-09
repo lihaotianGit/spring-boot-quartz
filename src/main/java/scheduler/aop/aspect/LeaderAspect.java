@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import scheduler.application.val.RuntimeVal;
+import scheduler.val.RuntimeVal;
 
 import javax.annotation.Resource;
 
@@ -28,7 +28,7 @@ public class LeaderAspect {
             logger.info("I'm leader, I do the job.");
             pjp.proceed();
         } else {
-            logger.info("I'm not leader, I don't want to do job.");
+            logger.info("I'm not leader, I can't do job.");
         }
         return null;
     }

@@ -1,4 +1,4 @@
-package scheduler.leader;
+package scheduler.config.leader;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
@@ -7,8 +7,8 @@ import org.apache.curator.utils.CloseableUtils;
 import org.apache.log4j.Logger;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Component;
-import scheduler.application.val.RuntimeVal;
-import scheduler.application.val.ZooKeeperVal;
+import scheduler.val.RuntimeVal;
+import scheduler.val.ZooKeeperVal;
 
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;

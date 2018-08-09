@@ -1,4 +1,4 @@
-package scheduler.leader.test;
+package scheduler.config.leader.test;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;

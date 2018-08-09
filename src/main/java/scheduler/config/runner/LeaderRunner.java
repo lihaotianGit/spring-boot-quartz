@@ -1,10 +1,10 @@
-package scheduler.application.run;
+package scheduler.config.runner;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import scheduler.leader.LeaderLatchGetter;
+import scheduler.config.leader.LeaderLatchGetter;
 
 import javax.annotation.Resource;
 

@@ -1,4 +1,4 @@
-package scheduler.application.val;
+package scheduler.val;
 
 import org.springframework.stereotype.Component;
 
